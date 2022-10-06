@@ -1,5 +1,6 @@
 const redux = require('redux')
 const createStore = redux.createStore
+const bindActionCreators = redux.bindActionCreators
 
 const CAKE_ORDERED = 'CAKE ORDERED'
 const CAKE_RESTOCKED = 'CAKE_RESTOCKED'
@@ -28,14 +29,14 @@ const reducer = (state = initialState, action) => {
         case CAKE_ORDERED:
             return {
                 // If the state object contains more than 1 property
-                ...state,   
+                ...state,
                 numOfCakes: state.numOfCakes - 1
             }
         case CAKE_RESTOCKED:
             return {
                 ...state,
                 // state.numOfCakes is used to show the current no. of Cakes
-                numOfCakes: state.numOfCakes + action.payload,  
+                numOfCakes: state.numOfCakes + action.payload,
             }
         default:
             return state
@@ -48,10 +49,16 @@ console.log('Initial State', store.getState())
 
 const unsubscribe = store.subscribe(() => console.log("Üpdate State ", store.getState()))
 
-store.dispatch(orderCake())
-store.dispatch(orderCake())
-store.dispatch(orderCake())
-store.dispatch(restockCake(3))
+// store.dispatch(orderCake())
+// store.dispatch(orderCake())
+// store.dispatch(orderCake())
+// store.dispatch(restockCake(3))
+
+const actions = bindActionCreators({ orderCake, restockCake }, store.dispatch)
+actions.orderCake()
+actions.orderCake()
+actions.orderCake()
+actions.restockCake(5)
 
 // Handles unregistering of listeners
 unsubscribe()
