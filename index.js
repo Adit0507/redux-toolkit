@@ -1,3 +1,6 @@
+const redux = require('redux')
+const createStore = redux.createStore
+
 const CAKE_ORDERED = 'CAKE ORDERED'
 
 // Creating Action
@@ -24,3 +27,13 @@ const reducer = (state = initialState, action) => {
     }
 }
 // (previousState, action) => newState
+
+const store = createStore(reducer)
+console.log('Initial State', store.getState())
+
+const unsubscribe = store.subscribe(() => console.log("Üpdate State ", store.getState()))
+
+store.dispatch(orderCake())
+store.dispatch(orderCake())
+// Handles unregistering of listeners
+unsubscribe()
