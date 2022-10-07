@@ -1,7 +1,6 @@
 const redux = require('redux')
 const createStore = redux.createStore
 const bindActionCreators = redux.bindActionCreators
-const combineReducers = redux.combineReducers 
 
 const CAKE_ORDERED = 'CAKE ORDERED'
 const CAKE_RESTOCKED = 'CAKE_RESTOCKED'
@@ -86,15 +85,9 @@ const iceCreamReducer = (state = initialIceCreamState, action) => {
     }
 }
 
-// Combining both the reducers into one
-const rootReducer = combineReducers({
-    cake: cakeReducer,
-    iceCream: iceCreamReducer
-})
 // (previousState, action) => newState
 
-// const store = createStore(reducer)
-const store = createStore(rootReducer)
+const store = createStore(reducer)
 console.log('Initial State', store.getState())
 
 const unsubscribe = store.subscribe(() => console.log("Üpdate State ", store.getState()))
