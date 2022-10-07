@@ -4,6 +4,8 @@ const bindActionCreators = redux.bindActionCreators
 
 const CAKE_ORDERED = 'CAKE ORDERED'
 const CAKE_RESTOCKED = 'CAKE_RESTOCKED'
+const ICECREAM_ORDERED = 'ICECREAM_ORDERED'
+const ICECREAM_RESTOCKED = 'ICECREAM_RESTOCKED'
 
 // Creating Action
 function orderCake() {
@@ -20,11 +22,34 @@ function restockCake(qty = 2) {
     }
 }
 
-const initialState = {
-    numOfCakes: 10,
+function orderIceCream(qty = 1){
+    return {
+        type: 'ICECREAM_ORDERED',
+        payload: qty
+    }
 }
 
-const reducer = (state = initialState, action) => {
+function restockIceCream(qty =1){
+    return {
+        type: 'ICECREAM_RESTOCKED',
+        payload: qty
+    }
+}
+
+// const initialState = {
+//     numOfCakes: 10,
+//     numOfIceCreams: 5,
+// }
+
+const initialCakeState = {
+    numOfCakes: 10
+}
+
+const initialIceCreamState = {
+    numOfIceCreams: 17
+}
+
+const cakeReducer = (state = initialCakeState, action) => {
     switch (action.type) {
         case CAKE_ORDERED:
             return {
@@ -42,6 +67,24 @@ const reducer = (state = initialState, action) => {
             return state
     }
 }
+
+const iceCreamReducer = (state = initialIceCreamState, action) => {
+    switch (action.type) {
+        case 'ICECREAM_ORDERED':
+            return {
+                ...state,
+                numOfIceCreams: state.numOfIceCreams - 1
+            }
+        case 'ICECREAM_RESTOCKED':
+            return {
+                ...state,
+                numOfIceCreams: state.numOfIceCreams + action.payload,
+            }
+        default:
+            return state
+    }
+}
+
 // (previousState, action) => newState
 
 const store = createStore(reducer)
@@ -54,11 +97,16 @@ const unsubscribe = store.subscribe(() => console.log("Üpdate State ", store.ge
 // store.dispatch(orderCake())
 // store.dispatch(restockCake(3))
 
-const actions = bindActionCreators({ orderCake, restockCake }, store.dispatch)
+const actions = bindActionCreators({ orderCake, restockCake, orderIceCream, restockIceCream }, store.dispatch)
 actions.orderCake()
 actions.orderCake()
 actions.orderCake()
 actions.restockCake(5)
+
+actions.orderIceCream()
+actions.orderIceCream()
+actions.orderIceCream()
+actions.restockIceCream(3)
 
 // Handles unregistering of listeners
 unsubscribe()
