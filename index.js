@@ -1,7 +1,12 @@
+// import { createLogger } from 'redux-logger'
 const redux = require('redux')
 const createStore = redux.createStore
 const bindActionCreators = redux.bindActionCreators
-const combineReducers = redux.combineReducers 
+const combineReducers = redux.combineReducers
+const applyMiddleWare = redux.applyMiddleware
+
+const reduxLogger = require('redux-logger')
+const logger = reduxLogger.createLogger()
 
 const CAKE_ORDERED = 'CAKE ORDERED'
 const CAKE_RESTOCKED = 'CAKE_RESTOCKED'
@@ -23,14 +28,14 @@ function restockCake(qty = 2) {
     }
 }
 
-function orderIceCream(qty = 1){
+function orderIceCream(qty = 1) {
     return {
         type: 'ICECREAM_ORDERED',
         payload: qty
     }
 }
 
-function restockIceCream(qty =1){
+function restockIceCream(qty = 1) {
     return {
         type: 'ICECREAM_RESTOCKED',
         payload: qty
@@ -94,10 +99,10 @@ const rootReducer = combineReducers({
 
 // (previousState, action) => newState
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer, applyMiddleWare(logger))
 console.log('Initial State', store.getState())
 
-const unsubscribe = store.subscribe(() => console.log("Üpdate State ", store.getState()))
+const unsubscribe = store.subscribe(() => { })
 
 // store.dispatch(orderCake())
 // store.dispatch(orderCake())
